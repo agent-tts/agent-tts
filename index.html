@@ -133,17 +133,17 @@
       <p class="theorem-title"><span>Theorem.</span> Post-inflection harness failure</p>
       <p>Freeze the agent state and historical best at <span class="eq">b<sub>inf</sub></span>. Suppose equal-cost independent continuations produce i.i.d. continuous candidate scores with nonzero probability of improving the historical best. Suppose also that the sampling branches and continued session share one joint-Elo scale whose restriction to the latter is <span class="eq">r(b)</span>. If the original harness has asymptotic post-inflection slope strictly below <span class="eq">s<sub>ref</sub></span>, frozen-state repeated sampling approaches slope <span class="eq">s<sub>ref</sub></span> and eventually yields a larger Elo gain than continuing the original session.</p>
     </article>
-    <article class="theorem-block">
-      <p class="theorem-title"><span>Theorem.</span> Inflection-point allocation</p>
-      <p>Suppose independent sessions yield i.i.d. continuous best-so-far scores at <span class="eq">b<sub>inf</sub></span>. For <span class="eq">B = K b<sub>inf</sub></span>, running <span class="eq">K</span> such sessions and returning their best solution gains <span class="eq">400 &middot; log<sub>10</sub> K</span> Elo over one session. The allocation curve extends <span class="eq">r(b<sub>inf</sub>)</span> with slope <span class="eq">s<sub>ref</sub></span> while preserving the harness advantage accumulated before the inflection point.</p>
-    </article>
   </div>
-  <p>Together, these results motivate a simple rule: set <span class="eq">K = max{1, round(B / b<sub>inf</sub>)}</span> and run <span class="eq">K</span> independent sessions to <span class="eq">b<sub>inf</sub></span>. Each session preserves the harness's early adaptive gains, while the parallel sessions restore the independent-sampling slope.</p>
+  <p>The first theorem motivates stopping each session at <span class="eq">b<sub>inf</sub></span>. For a total budget <span class="eq">B</span>, we evaluate the rule <span class="eq">K = max{1, round(B / b<sub>inf</sub>)}</span> and run <span class="eq">K</span> independent sessions to that point.</p>
   <figure class="allocation-figure">
     <img src="./static/images/allocation_main.png" alt="Four panels: per-group best-of-K raw scores, single-session self-Elo with the 38M inflection point, joint-Elo of six allocations versus total budget, and the 100M cross-section.">
     <figcaption><b>Allocating a fixed budget on FrontierCS Polyomino Packing with Kimi K2.7.</b> Top left: best-of-K raw score at 100M tokens in each of five nested session groups. Top right: single-session self-Elo against the sampling reference; the inflection point at 38M tokens predicts K = 3. Bottom left: joint-Elo of six allocations as the total budget grows, with the predicted three-session curve in red. Bottom right: the 100M-token cross-section. Ratings average over 20,000 random session-to-group assignments.</figcaption>
   </figure>
-  <div class="takeaway"><b>Takeaway.</b> One session leads at small budgets; interior allocations overtake it beyond the inflection point. At 100M tokens the predicted three-session split gains +264 joint-Elo over one long session and +355 over ten short ones, and is the best of the six candidates. The MLS-Bench replication points the same way.</div>
+  <article class="theorem-block post-figure-theorem">
+    <p class="theorem-title"><span>Theorem.</span> Inflection-point allocation</p>
+    <p>Suppose independent sessions yield i.i.d. continuous best-so-far scores at <span class="eq">b<sub>inf</sub></span>. For <span class="eq">B = K b<sub>inf</sub></span>, running <span class="eq">K</span> such sessions and returning their best solution gains <span class="eq">400 &middot; log<sub>10</sub> K</span> Elo over one session. The allocation curve extends <span class="eq">r(b<sub>inf</sub>)</span> with slope <span class="eq">s<sub>ref</sub></span> while preserving the harness advantage accumulated before the inflection point.</p>
+  </article>
+  <p>In the experiment, one session leads at small budgets, while interior allocations overtake it beyond the inflection point. At 100M tokens, the predicted three-session split gains +264 joint-Elo over one long session and +355 over ten short ones, and is the best of the six candidates. The MLS-Bench replication points the same way.</p>
 </section>
 
 <section class="section" id="interventions">
