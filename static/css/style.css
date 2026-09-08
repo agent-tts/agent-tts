@@ -26,6 +26,8 @@ a:hover{text-decoration:underline}
 .btn:hover{background:#000;text-decoration:none}
 .btn.soon{background:#9a9a9a;cursor:default}
 .btn svg{width:17px;height:17px;fill:currentColor}
+.project-context{font-size:1.08rem;line-height:1.65;color:var(--muted);margin:8px 0 24px}
+.project-context a{font-weight:600}
 .section{padding:34px 0 8px;border-top:1px solid var(--line);scroll-margin-top:84px}
 .section h2{font-size:1.65rem;margin:0 0 14px;letter-spacing:0}
 .section h3{font-size:1.2rem;margin:26px 0 8px}
