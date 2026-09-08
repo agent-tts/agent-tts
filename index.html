@@ -136,7 +136,7 @@
   </div>
   <p>The first theorem motivates stopping each session at <span class="eq">b<sub>inf</sub></span>. For a total budget <span class="eq">B</span>, we evaluate the rule <span class="eq">K = max{1, round(B / b<sub>inf</sub>)}</span> and run <span class="eq">K</span> independent sessions to that point.</p>
   <figure class="allocation-figure">
-    <img src="./static/images/allocation_main.png" alt="Four panels: per-group best-of-K raw scores, single-session self-Elo with the 38M inflection point, joint-Elo of six allocations versus total budget, and the 100M cross-section.">
+    <img class="animated-chart" src="./static/images/allocation_main.gif" data-static-src="./static/images/allocation_main.png" loading="lazy" alt="Animated four-panel allocation figure: the single-session self-Elo panel and allocation joint-Elo panel grow with token budget, alongside static best-of-K and 100M-token summaries.">
     <figcaption><b>Allocating a fixed budget on FrontierCS Polyomino Packing with Kimi K2.7.</b> Top left: best-of-K raw score at 100M tokens in each of five nested session groups. Top right: single-session self-Elo against the sampling reference; the inflection point at 38M tokens predicts K = 3. Bottom left: joint-Elo of six allocations as the total budget grows, with the predicted three-session curve in red. Bottom right: the 100M-token cross-section. Ratings average over 20,000 random session-to-group assignments.</figcaption>
   </figure>
   <article class="theorem-block post-figure-theorem">
