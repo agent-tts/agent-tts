@@ -11,7 +11,7 @@ a:hover{text-decoration:underline}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
 .hero{text-align:center;padding:56px 0 24px}
 .hero h1{font-size:2.35rem;line-height:1.2;margin:0 0 18px;font-weight:700;letter-spacing:0}
-.hero-logo-strip{display:block;width:min(520px,calc(100% - 24px));height:auto;margin:0 auto 20px}
+.hero-logo-strip{display:block;width:min(420px,84%);height:auto;margin:0 auto 20px}
 .hero .subtitle{font-size:1.05rem;color:var(--muted);margin:0 0 22px}
 .authors{font-size:1.05rem;line-height:1.9;margin:0 auto 6px;max-width:860px}
 .author-entry{display:inline-block;white-space:nowrap}
