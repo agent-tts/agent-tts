@@ -9,6 +9,8 @@ takeaway boxes, results, BibTeX, footer.
   at 220–320 dpi, plus the institution logo strip.
 - `scripts/make_teaser_gif.py` — regenerates the animated teaser from the two CSV files
   in `scripts/data/`.
+- `scripts/make_human_joint_gif.py` — regenerates the animated three-contest
+  human–agent chart from its final static figure.
 - `preview/index_preview.html` — self-contained copy with images and CSS inlined, for
   previewing without a server. Regenerate after edits (see below).
 
@@ -16,6 +18,7 @@ takeaway boxes, results, BibTeX, footer.
 
 ```bash
 python3 scripts/make_teaser_gif.py
+python3 scripts/make_human_joint_gif.py
 ```
 
 ## Placeholders to fill before launch

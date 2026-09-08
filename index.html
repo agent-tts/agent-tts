@@ -59,7 +59,7 @@
 <p class="project-context">We previously studied how agents and humans scale against repeated sampling on a long-horizon task in <a href="https://joyemang33.github.io/blog/2026/humans-dont-just-sample/" target="_blank" rel="noopener">Humans Still Beat AI in the Long Horizon</a>. This project extends that initial analysis into a suite of tools for systematically understanding agents' test-time strategies across tasks, systems, and compute scales.</p>
 
 <figure class="teaser-figure">
-  <img class="animated-teaser" src="./static/images/main-figure.gif" data-static-src="./static/images/main-figure.png" alt="Animated chart. Left: self-Elo curves of four agent systems growing with token budget against the 400-Elo-per-decade sampling reference. Right: human versus agent joint-Elo growing over wall-clock time on AHC014.">
+  <img class="animated-chart animated-teaser" src="./static/images/main-figure.gif" data-static-src="./static/images/main-figure.png" alt="Animated chart. Left: self-Elo curves of four agent systems growing with token budget against the 400-Elo-per-decade sampling reference. Right: human versus agent joint-Elo growing over wall-clock time on AHC014.">
   <figcaption><b>Agent and human scaling against repeated sampling.</b> Left: self-Elo curves for four agent systems, each aggregated across FrontierCS, ALE-Bench, FlashInfer-Bench and MLS-Bench; shading shows 95% confidence intervals and the dashed line is the 400-Elo-per-decade independent-sampling reference. Right: human&ndash;agent joint-Elo on AHC014 over wall-clock time; agents flatten within their 24-hour runs, while the top-10 and top-50 human cohorts overtake them within days and keep improving.</figcaption>
 </figure>
 
@@ -105,7 +105,7 @@
   <h2>Humans keep learning: superlinear scaling on the same tasks</h2>
   <p>AtCoder Heuristic Contests give us long-horizon human trajectories on exactly the kind of open-ended tasks the agents run on. We rejudge every accepted submission of the top-50 contestants through the same checker the agents use, align the k-th contest-hour checkpoint with the k-th agent token checkpoint (both doubling grids), and fit one Bradley&ndash;Terry tournament per contest.</p>
   <figure>
-    <img src="./static/images/ale_joint.png" alt="Three panels (AHC038, AHC040, AHC031): joint-Elo of top-10 and top-50 human cohorts versus four agents over aligned doubling checkpoints.">
+    <img class="animated-chart" src="./static/images/ale_joint.gif" data-static-src="./static/images/ale_joint.png" loading="lazy" alt="Animated three-panel chart (AHC038, AHC040, AHC031): joint-Elo curves of top-10 and top-50 human cohorts and four agents growing over aligned doubling checkpoints.">
     <figcaption><b>Human&ndash;agent joint-Elo on three AHC contests.</b> Each panel compares the rejudged top-10 and top-50 human cohorts with all four agent systems; the bottom axis is the agent token budget, the top axis the human contest time at the corresponding doubling checkpoint. Terminal ratings are labelled.</figcaption>
   </figure>
   <div class="grid2">
@@ -232,7 +232,7 @@ document.querySelectorAll('[data-carousel]').forEach((carousel) => {
 });
 
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.querySelectorAll('.animated-teaser').forEach((image) => {
+  document.querySelectorAll('.animated-chart').forEach((image) => {
     image.src = image.dataset.staticSrc;
   });
 }
