@@ -42,7 +42,7 @@ figcaption{font-size:.92rem;color:var(--muted);margin-top:10px;line-height:1.5}
 .carousel-stage{display:grid}
 .carousel-slide{grid-area:1/1;margin:0;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease}
 .carousel-slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
-.carousel-media{width:100%;aspect-ratio:2007/837;display:grid;place-items:center;background:#fff;overflow:hidden}
+.carousel-media{width:100%;aspect-ratio:2007/671;display:grid;place-items:center;background:#fff;overflow:hidden}
 .carousel-media img{width:100%;height:100%;object-fit:contain}
 .carousel-slide figcaption{min-height:4.5em}
 .carousel-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:10px}
