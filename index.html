@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When Agents Slow Down: Elo-per-token Analysis of LLM Agents' Test-Time Strategies</title>
+<meta name="description" content="Elo-per-token analysis: how LLM agents, independent sampling, and human contestants scale with test-time compute on open-ended tasks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+
+<nav class="nav"><div class="inner">
+  <a href="#tldr">TL;DR</a>
+  <a href="#method">Elo-per-token</a>
+  <a href="#reference">Sampling reference</a>
+  <a href="#agents">Agents</a>
+  <a href="#humans">Humans</a>
+  <a href="#allocation">Allocation</a>
+  <a href="#interventions">Interventions</a>
+  <a href="#bibtex">BibTeX</a>
+</div></nav>
+
+<header class="hero wrap">
+  <h1>When Agents Slow Down: Understanding LLM Agents' Test-Time Strategies via Elo-per-token Analysis</h1>
+  <p class="authors">
+    Kaiyuan Liu<sup>*1,2</sup>, Qiuyang Mang<sup>*1,&sect;</sup>, Bo Peng<sup>3</sup>, Wenhao Chai<sup>3</sup>, Hanchen Li<sup>1</sup>,
+    Shreyas Pimpalgaonkar<sup>4</sup>, Luke Zettlemoyer<sup>2</sup>, Alex Dimakis<sup>1,4</sup>, Alvin Cheung<sup>1</sup>
+  </p>
+  <p class="affils"><sup>1</sup>UC Berkeley &nbsp;&middot;&nbsp; <sup>2</sup>University of Washington &nbsp;&middot;&nbsp; <sup>3</sup>Princeton University &nbsp;&middot;&nbsp; <sup>4</sup>Bespoke Labs</p>
+  <p class="note"><sup>*</sup>Equal contribution (alphabetical order) &nbsp;&middot;&nbsp; <sup>&sect;</sup>Project leader &nbsp;&middot;&nbsp; Correspondence: <a href="mailto:qmang@berkeley.edu">qmang@berkeley.edu</a></p>
+  <p class="venue">Preprint, 2026</p>
+  <div class="btn-row">
+    <!-- TODO(arXiv): replace href with the arXiv abs URL and drop the "soon" class -->
+    <a class="btn soon" href="#" title="arXiv link coming soon"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6zm8 1.5V8h4.5M8 12h8v1.5H8zm0 3h8v1.5H8z"/></svg>Paper (arXiv soon)</a>
+    <!-- TODO(code): replace href with the GitHub repository URL -->
+    <a class="btn soon" href="#" title="Code release coming soon"><svg viewBox="0 0 24 24"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.1c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>Code (soon)</a>
+    <!-- TODO(data): replace href with the raw-data release URL -->
+    <a class="btn soon" href="#" title="Data release coming soon"><svg viewBox="0 0 24 24"><path d="M12 3C7 3 3 4.6 3 6.5v11C3 19.4 7 21 12 21s9-1.6 9-3.5v-11C21 4.6 17 3 12 3zm0 2c4.4 0 7 1.3 7 1.5S16.4 8 12 8 5 6.7 5 6.5 7.6 5 12 5zm7 12.5c0 .2-2.6 1.5-7 1.5s-7-1.3-7-1.5V15c1.7.9 4.3 1.5 7 1.5s5.3-.6 7-1.5v2.5zm0-5c0 .2-2.6 1.5-7 1.5s-7-1.3-7-1.5V10c1.7.9 4.3 1.5 7 1.5s5.3-.6 7-1.5v2.5z"/></svg>Data (soon)</a>
+    <a class="btn" href="#bibtex"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zm2 2v14h10V5zm2 2h6v1.5H9zm0 3h6v1.5H9zm0 3h4v1.5H9z"/></svg>BibTeX</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+<figure>
+  <img src="./static/images/main-figure.png" alt="Left: self-Elo curves of four agent systems against the 400-Elo-per-decade sampling reference. Right: human versus agent joint-Elo on AHC014 over wall-clock time.">
+  <figcaption><b>Agent and human scaling against repeated sampling.</b> Left: self-Elo curves for four agent systems, each aggregated across FrontierCS, ALE-Bench, FlashInfer-Bench and MLS-Bench; shading shows 95% confidence intervals and the dashed line is the 400-Elo-per-decade independent-sampling reference. Right: human&ndash;agent joint-Elo on AHC014 over wall-clock time; agents flatten within their 24-hour runs, while the top-10 and top-50 human cohorts overtake them within days and keep improving.</figcaption>
+</figure>
+
+<section class="section" id="tldr">
+  <h2>TL;DR</h2>
+  <div class="tldr"><ul>
+    <li><b>A common scale.</b> <em>Elo-per-token</em> rates an agent's best solution so far at every token budget with a Bradley&ndash;Terry model, so agents, sampling baselines and human contestants can be compared across tasks whose raw scores live on different scales.</li>
+    <li><b>Agents reduce to independent sampling.</b> Solving a task <span class="eq">k</span> times independently and keeping the best attempt gains exactly 400 Elo per decade of compute. Kimi K2.7, GPT-5.5 (Codex), Claude Opus 4.8 and Gemini 3.5 Flash start faster than this line on four open-ended benchmarks, but after the first few context-window compactions their marginal gains fall to, and often below, it &mdash; over sessions of up to 100M tokens.</li>
+    <li><b>Humans scale superlinearly.</b> Under the same judge, the strongest AtCoder Heuristic Contest competitors keep improving superlinearly in log contest time and overtake agents within days: evidence of continual learning within a single problem.</li>
+    <li><b>A rule for spending compute.</b> The <em>scaling inflection point</em>, where an agent's Elo slope drops to the sampling reference, tells you how to split a budget. On FrontierCS Polyomino Packing, three 33M-token sessions beat one 100M-token session by +264 Elo and ten 10M-token sessions by +355.</li>
+  </ul></div>
+</section>
+
+<section class="section" id="method">
+  <h2>What is Elo-per-token?</h2>
+  <p>Open-ended tasks such as GPU-kernel optimization, heuristic programming contests and ML-systems tuning score every submission, so progress inside a long session is observable. Raw scores, however, are not a usable measure: they use different units across tasks, and within a task equal increments need not mean equal progress. We therefore <em>rate</em> submissions instead of scoring them.</p>
+  <figure>
+    <img src="./static/images/fig_method.png" alt="Method overview: per-session best-so-far score at each token checkpoint, pairwise games within a task, and a Bradley-Terry fit producing an Elo curve.">
+    <figcaption><b>From submission streams to Elo curves.</b> Each session emits a stream of (tokens so far, score). At every checkpoint on a 1.5&times; token grid a session's player is its best score so far. Two players on the same task play a game (higher score wins, ties split); outcomes are pooled across tasks and a Bradley&ndash;Terry model turns them into one Elo rating per (system, budget) player, anchored at 1000.</figcaption>
+  </figure>
+  <p>Because Elo depends only on within-task orderings, it is comparable across tasks and insensitive to the nonlinearity of raw scores. <b>Self-Elo</b> fits one system alone from cross-session games between its own checkpoints, so the curve shape is the system's own scaling behaviour. <b>Joint-Elo</b> puts several systems &mdash; or agents and human contestants &mdash; in one tournament, so their levels become comparable too.</p>
+</section>
+
+<section class="section" id="reference">
+  <h2>Independent sampling is a straight line: 400 Elo per decade</h2>
+  <p>If a system's sessions are exchangeable, spending <span class="eq">k</span> times the compute by running <span class="eq">k</span> independent sessions and keeping the best one is <em>best-of-k</em>. Under the Bradley&ndash;Terry model the strength of best-of-<span class="eq">k</span> grows linearly in <span class="eq">k</span>, so its Elo is</p>
+  <p style="text-align:center"><span class="eq">Elo(k) = Elo(1) + 400 &middot; log<sub>10</sub> k</span></p>
+  <p>&mdash; a straight line of 400 Elo per decade of compute, independent of the task. This memoryless strategy is the reference against which we read every curve: a system that scales <em>better</em> than sampling from its own state must be doing something with its context that repeated attempts cannot.</p>
+  <div class="takeaway"><b>Scaling inflection point.</b> The last budget at which a system's self-Elo slope still exceeds 400 Elo per decade. Beyond it, continuing the session is asymptotically less compute-efficient than restarting independent sessions from the state already reached.</div>
+</section>
+
+<section class="section" id="agents">
+  <h2>Agents fail to break log-linear scaling</h2>
+  <p>We run four general-purpose coding agents &mdash; Kimi Code (K2.7), Codex (GPT-5.5), Claude Code (Opus 4.8) and Gemini CLI (Gemini 3.5 Flash) &mdash; with a 100M-token budget per session on FrontierCS, ALE-Bench, FlashInfer-Bench and MLS-Bench, five sessions per task, submitting intermediate solutions throughout. Every submission is scored by the benchmark's own judge.</p>
+  <figure>
+    <img src="./static/images/main_results_15panel.png" alt="Fifteen-panel figure: self-Elo per benchmark and pooled (top), local self-Elo slope (middle), joint-Elo across systems (bottom).">
+    <figcaption><b>Agent scaling across benchmarks.</b> Top: self-Elo curves on each benchmark and pooled across all domains, with 95% session-bootstrap intervals and the sampling reference (dashed). Middle: local self-Elo slope fitted over five neighbouring checkpoints; the dashed line is the 400-Elo-per-decade sampling slope. Bottom: joint-Elo curves compare the systems on a shared scale within each benchmark and across all domains.</figcaption>
+  </figure>
+  <div class="takeaway"><b>Takeaway.</b> Every system keeps improving with more compute, but the local slopes peak within the first megatokens and then decay toward &mdash; and usually below &mdash; the sampling line. Once the harness has compacted its context a few times, an agent's adaptive strategy no longer buys more than independent restarts would.</div>
+</section>
+
+<section class="section" id="humans">
+  <h2>Humans keep learning: superlinear scaling on the same tasks</h2>
+  <p>AtCoder Heuristic Contests give us long-horizon human trajectories on exactly the kind of open-ended tasks the agents run on. We rejudge every accepted submission of the top-50 contestants through the same checker the agents use, align the k-th contest-hour checkpoint with the k-th agent token checkpoint (both doubling grids), and fit one Bradley&ndash;Terry tournament per contest.</p>
+  <figure>
+    <img src="./static/images/ale_joint.png" alt="Three panels (AHC038, AHC040, AHC031): joint-Elo of top-10 and top-50 human cohorts versus four agents over aligned doubling checkpoints.">
+    <figcaption><b>Human&ndash;agent joint-Elo on three AHC contests.</b> Each panel compares the rejudged top-10 and top-50 human cohorts with all four agent systems; the bottom axis is the agent token budget, the top axis the human contest time at the corresponding doubling checkpoint. Terminal ratings are labelled.</figcaption>
+  </figure>
+  <div class="grid2">
+    <figure>
+      <img src="./static/images/human_ahc_pooled.png" alt="Human self-Elo pooled over seven AHC contests; both cohorts are convex in log contest time.">
+      <figcaption><b>Human self-Elo pooled over seven long AHC contests.</b> Both cohorts are convex in log contest time: later doublings yield larger Elo gains. Shading shows 95% bootstrap intervals.</figcaption>
+    </figure>
+    <div>
+      <div class="takeaway"><b>Takeaway.</b> Agents make their strongest gains early and then flatten; the strongest humans keep accelerating and overtake them within days. Superlinear scaling cannot come from accumulating independent attempts &mdash; contestants accumulate knowledge of the problem as they work on it. Unless continual learning is solved, agents will not outperform humans on tasks that span many days.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="allocation">
+  <h2>Allocating compute at the scaling inflection point</h2>
+  <p>Given a total budget <span class="eq">B</span>, should a system spend it on one long session or split it across <span class="eq">K</span> shorter independent sessions and keep the best result? The Elo-per-token curve answers this without running every allocation: read the scaling inflection point <span class="eq">b<sub>inf</sub></span> off the single-session curve and run <span class="eq">K = max{1, round(B / b<sub>inf</sub>)}</span> sessions of <span class="eq">b<sub>inf</sub></span> tokens each. Each session exploits the harness while it still beats sampling, and the parallel sessions restore the sampling slope on top of the accumulated per-session gains.</p>
+  <figure>
+    <img src="./static/images/allocation_main.png" alt="Four panels: per-group best-of-K raw scores, single-session self-Elo with the 38M inflection point, joint-Elo of six allocations versus total budget, and the 100M cross-section.">
+    <figcaption><b>Allocating a fixed budget on FrontierCS Polyomino Packing with Kimi K2.7.</b> Top left: best-of-K raw score at 100M tokens in each of five nested session groups. Top right: single-session self-Elo against the sampling reference; the inflection point at 38M tokens predicts K = 3. Bottom left: joint-Elo of six allocations as the total budget grows, with the predicted three-session curve in red. Bottom right: the 100M-token cross-section. Ratings average over 20,000 random session-to-group assignments.</figcaption>
+  </figure>
+  <div class="takeaway"><b>Takeaway.</b> One session leads at small budgets; interior allocations overtake it beyond the inflection point. At 100M tokens the predicted three-session split gains +264 joint-Elo over one long session and +355 over ten short ones, and is the best of the six candidates. The MLS-Bench replication points the same way.</div>
+</section>
+
+<section class="section" id="interventions">
+  <h2>Can specialised test-time strategies change the shape?</h2>
+  <p>General-purpose agents lose their edge over independent sampling as compute grows. We ask whether strategies built for open-ended optimisation do better: outer-loop methods that evolve programs or prompts from evaluator feedback, test-time training that updates model weights during evaluation, and simply larger models.</p>
+  <figure>
+    <img src="./static/images/optmethods_p0_elo_panels.png" alt="Left: self-Elo of AdaEvolve and GEPA versus the Kimi Code reference on uncached tokens. Right: joint-Elo fit.">
+    <figcaption><b>Test-time evolving (AdaEvolve, GEPA) on Polyomino Packing, measured in uncached tokens.</b> Left: self-Elo curves for the two evolutionary methods with Kimi Code as the agent reference; neither sustains superlinear scaling. Right: a joint-Elo fit; the evolving methods gain an early advantage that diminishes with compute.</figcaption>
+  </figure>
+  <div class="grid2">
+    <figure>
+      <img src="./static/images/ttt_p0_selfelo.png" alt="Test-time training self-Elo and local slope on Polyomino Packing in generated tokens.">
+      <figcaption><b>Test-time training</b> shows a brief period of faster-than-sampling scaling followed by diminishing returns; its slope declines back toward the reference.</figcaption>
+    </figure>
+    <figure>
+      <img src="./static/images/qwen_size_scaling.png" alt="Qwen3.5 models of different sizes on Polyomino Packing at 50M tokens: joint-Elo (left) and per-model self-Elo (right).">
+      <figcaption><b>Model size</b> (Qwen3.5 family, terminus-2 harness, 50M tokens, five trials per model). Left: one tournament over all (model, checkpoint) players, so levels are comparable. Right: one fit per model anchored at 1000, so only shapes are comparable.</figcaption>
+    </figure>
+  </div>
+  <div class="takeaway"><b>Takeaway.</b> Evolutionary outer loops, online weight updates and bigger models all shift the curves, but none of them escapes the diminishing-return shape: after an early burst, every strategy we tried scales no better than repeated sampling.</div>
+</section>
+
+<section class="section" id="bibtex">
+  <h2>BibTeX</h2>
+  <div class="bibtex"><pre id="bibtex-src">@article{liu2026agentsslowdown,
+  title   = {When Agents Slow Down: Understanding {LLM} Agents' Test-Time Strategies via {Elo}-per-token Analysis},
+  author  = {Liu, Kaiyuan and Mang, Qiuyang and Peng, Bo and Chai, Wenhao and Li, Hanchen and Pimpalgaonkar, Shreyas and Zettlemoyer, Luke and Dimakis, Alex and Cheung, Alvin},
+  journal = {arXiv preprint},
+  year    = {2026},
+  note    = {arXiv identifier to appear}
+}</pre></div>
+  <p class="copy"><button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('bibtex-src').innerText)">Copy BibTeX</button></p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="./static/images/institution-strip.png" alt="UC Berkeley, University of Washington, Princeton University, Bespoke Labs">
+    <p>Correspondence: <a href="mailto:qmang@berkeley.edu">qmang@berkeley.edu</a></p>
+    <p class="small">Page template inspired by the <a href="https://zanette-labs.github.io/TailRL-website/">TailRL project page</a>.</p>
+  </div>
+</footer>
+
+</body>
+</html>
