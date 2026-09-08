@@ -153,19 +153,19 @@
     <div class="carousel-stage" aria-live="polite">
       <figure class="carousel-slide is-active" data-carousel-slide>
         <div class="carousel-media">
-          <img src="./static/images/optmethods_p0_elo_panels.png" alt="Left: self-Elo of AdaEvolve and GEPA versus the Kimi Code reference on uncached tokens. Right: joint-Elo fit.">
+          <img class="animated-chart" src="./static/images/optmethods_p0_elo_panels.gif" data-static-src="./static/images/optmethods_p0_elo_panels.png" loading="lazy" alt="Animated figure. Left: self-Elo of AdaEvolve and GEPA versus the Kimi Code reference on uncached tokens. Right: joint-Elo fit.">
         </div>
         <figcaption><b>Test-time evolving (AdaEvolve, GEPA) on Polyomino Packing, measured in uncached tokens.</b> Left: self-Elo curves for the two evolutionary methods with Kimi Code as the agent reference; neither sustains superlinear scaling. Right: a joint-Elo fit; the evolving methods gain an early advantage that diminishes with compute.</figcaption>
       </figure>
       <figure class="carousel-slide" data-carousel-slide aria-hidden="true">
         <div class="carousel-media">
-          <img src="./static/images/ttt_p0_selfelo.png" alt="Test-time training self-Elo and local slope on Polyomino Packing in generated tokens.">
+          <img class="animated-chart" src="./static/images/ttt_p0_selfelo.gif" data-static-src="./static/images/ttt_p0_selfelo.png" loading="lazy" alt="Animated test-time training self-Elo and local slope on Polyomino Packing in generated tokens.">
         </div>
         <figcaption><b>Test-time training</b> shows a brief period of faster-than-sampling scaling followed by diminishing returns; its slope declines back toward the reference.</figcaption>
       </figure>
       <figure class="carousel-slide" data-carousel-slide aria-hidden="true">
         <div class="carousel-media">
-          <img src="./static/images/qwen_size_scaling.png" alt="Qwen3.5 models of different sizes on Polyomino Packing at 50M tokens: joint-Elo (left) and per-model self-Elo (right).">
+          <img class="animated-chart" src="./static/images/qwen_size_scaling.gif" data-static-src="./static/images/qwen_size_scaling.png" loading="lazy" alt="Animated Qwen3.5 model-size scaling on Polyomino Packing at 50M tokens: joint-Elo (left) and per-model self-Elo (right).">
         </div>
         <figcaption><b>Model size</b> (Qwen3.5 family, terminus-2 harness, 50M tokens, five trials per model). Left: one tournament over all (model, checkpoint) players, so levels are comparable. Right: one fit per model anchored at 1000, so only shapes are comparable.</figcaption>
       </figure>
@@ -222,6 +222,13 @@ document.querySelectorAll('[data-carousel]').forEach((carousel) => {
       const selected = i === active;
       slide.classList.toggle('is-active', selected);
       slide.setAttribute('aria-hidden', String(!selected));
+      const image = slide.querySelector('.animated-chart');
+      if (selected && image && !reducedMotion.matches) {
+        const source = image.dataset.animatedSrc || image.src;
+        image.dataset.animatedSrc = source;
+        image.src = '';
+        window.requestAnimationFrame(() => { image.src = source; });
+      }
     });
     dots.forEach((dot, i) => {
       const selected = i === active;
