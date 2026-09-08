@@ -123,7 +123,7 @@
 <section class="section" id="allocation">
   <h2>Allocating compute at the scaling inflection point</h2>
   <p>Given a total budget <span class="eq">B</span>, should a system spend it on one long session or split it across <span class="eq">K</span> shorter independent sessions and keep the best result? The Elo-per-token curve answers this without running every allocation: read the scaling inflection point <span class="eq">b<sub>inf</sub></span> off the single-session curve and run <span class="eq">K = max{1, round(B / b<sub>inf</sub>)}</span> sessions of <span class="eq">b<sub>inf</sub></span> tokens each. Each session exploits the harness while it still beats sampling, and the parallel sessions restore the sampling slope on top of the accumulated per-session gains.</p>
-  <figure>
+  <figure class="allocation-figure">
     <img src="./static/images/allocation_main.png" alt="Four panels: per-group best-of-K raw scores, single-session self-Elo with the 38M inflection point, joint-Elo of six allocations versus total budget, and the 100M cross-section.">
     <figcaption><b>Allocating a fixed budget on FrontierCS Polyomino Packing with Kimi K2.7.</b> Top left: best-of-K raw score at 100M tokens in each of five nested session groups. Top right: single-session self-Elo against the sampling reference; the inflection point at 38M tokens predicts K = 3. Bottom left: joint-Elo of six allocations as the total budget grows, with the predicted three-session curve in red. Bottom right: the 100M-token cross-section. Ratings average over 20,000 random session-to-group assignments.</figcaption>
   </figure>
