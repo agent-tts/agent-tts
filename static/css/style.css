@@ -59,10 +59,19 @@ figcaption{font-size:.92rem;color:var(--muted);margin-top:10px;line-height:1.5}
 .tldr li{margin:0 0 12px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
 .grid2>div .takeaway{margin:0}
+.inflection-equation{text-align:center;margin:16px 0 22px;font-size:1.08rem}
+.eq-fraction{display:inline-grid;grid-template-rows:auto auto;vertical-align:middle;text-align:center;line-height:1.15;margin:0 .3em}
+.eq-fraction>span:first-child{border-bottom:1px solid currentColor;padding:0 .28em .08em}
+.eq-fraction>span:last-child{padding:.08em .28em 0}
+.theorem-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin:0 0 22px;align-items:stretch}
+.theorem-block{border:1px solid #dfe4ee;border-left:4px solid var(--accent);border-radius:6px;background:#fbfcff;padding:15px 17px}
+.theorem-block p{margin:0}
+.theorem-title{font-weight:650;line-height:1.35;margin-bottom:9px!important}
+.theorem-title span{color:var(--accent)}
 .allocation-figure{margin:28px 0 34px}
 .allocation-figure img{width:calc(100% - 44px);margin:18px auto 16px}
 .allocation-figure figcaption{margin-left:22px;margin-right:22px}
-@media (max-width:760px){.grid2{grid-template-columns:1fr;gap:8px;align-items:start}.grid2>div .takeaway{margin:0 0 22px}.allocation-figure{margin:24px 0 30px}.allocation-figure img{width:calc(100% - 16px);margin:10px auto 14px}.allocation-figure figcaption{margin-left:8px;margin-right:8px}.hero h1{font-size:1.75rem}.carousel-slide figcaption{min-height:7.5em}}
+@media (max-width:760px){.grid2{grid-template-columns:1fr;gap:8px;align-items:start}.grid2>div .takeaway{margin:0 0 22px}.inflection-equation{font-size:.92rem;white-space:nowrap}.theorem-grid{grid-template-columns:1fr}.allocation-figure{margin:24px 0 30px}.allocation-figure img{width:calc(100% - 16px);margin:10px auto 14px}.allocation-figure figcaption{margin-left:8px;margin-right:8px}.hero h1{font-size:1.75rem}.carousel-slide figcaption{min-height:7.5em}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.carousel-slide{transition:none}}
 .eq{font-family:"Latin Modern Math","STIX Two Math","Cambria Math",serif;font-size:1.05em}
 .bibtex{background:#f4f4f6;border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:.86rem;line-height:1.5}

@@ -122,7 +122,23 @@
 
 <section class="section" id="allocation">
   <h2>Allocating compute at the scaling inflection point</h2>
-  <p>Given a total budget <span class="eq">B</span>, should a system spend it on one long session or split it across <span class="eq">K</span> shorter independent sessions and keep the best result? The Elo-per-token curve answers this without running every allocation: read the scaling inflection point <span class="eq">b<sub>inf</sub></span> off the single-session curve and run <span class="eq">K = max{1, round(B / b<sub>inf</sub>)}</span> sessions of <span class="eq">b<sub>inf</sub></span> tokens each. Each session exploits the harness while it still beats sampling, and the parallel sessions restore the sampling slope on top of the accumulated per-session gains.</p>
+  <p>Given a total budget <span class="eq">B</span>, should a system spend it on one long session or split it across <span class="eq">K</span> shorter independent sessions and keep the best result? We study equal allocations with <span class="eq">b = B/K</span> tokens per session. For a system with self-Elo curve <span class="eq">r(b)</span>, the <em>scaling inflection point</em> is the last budget at which the curve grows faster than independent sampling:</p>
+  <div class="inflection-equation" aria-label="b inf equals the supremum of budgets where the derivative of r of b with respect to log base ten b exceeds s ref; s ref equals 400">
+    <span class="eq">b<sub>inf</sub> = sup { b :</span>
+    <span class="eq eq-fraction"><span>d r(b)</span><span>d log<sub>10</sub> b</span></span>
+    <span class="eq">&gt; s<sub>ref</sub> }, &nbsp; s<sub>ref</sub> = 400.</span>
+  </div>
+  <div class="theorem-grid">
+    <article class="theorem-block">
+      <p class="theorem-title"><span>Theorem 6.1.</span> Post-inflection harness failure</p>
+      <p>Freeze the agent state and historical best at <span class="eq">b<sub>inf</sub></span>. Suppose equal-cost independent continuations produce i.i.d. continuous candidate scores with nonzero probability of improving the historical best. Suppose also that the sampling branches and continued session share one joint-Elo scale whose restriction to the latter is <span class="eq">r(b)</span>. If the original harness has asymptotic post-inflection slope strictly below <span class="eq">s<sub>ref</sub></span>, frozen-state repeated sampling approaches slope <span class="eq">s<sub>ref</sub></span> and eventually yields a larger Elo gain than continuing the original session.</p>
+    </article>
+    <article class="theorem-block">
+      <p class="theorem-title"><span>Theorem 6.2.</span> Inflection-point allocation</p>
+      <p>Suppose independent sessions yield i.i.d. continuous best-so-far scores at <span class="eq">b<sub>inf</sub></span>. For <span class="eq">B = K b<sub>inf</sub></span>, running <span class="eq">K</span> such sessions and returning their best solution gains <span class="eq">400 &middot; log<sub>10</sub> K</span> Elo over one session. The allocation curve extends <span class="eq">r(b<sub>inf</sub>)</span> with slope <span class="eq">s<sub>ref</sub></span> while preserving the harness advantage accumulated before the inflection point.</p>
+    </article>
+  </div>
+  <p>Together, these results motivate a simple rule: set <span class="eq">K = max{1, round(B / b<sub>inf</sub>)}</span> and run <span class="eq">K</span> independent sessions to <span class="eq">b<sub>inf</sub></span>. Each session preserves the harness's early adaptive gains, while the parallel sessions restore the independent-sampling slope.</p>
   <figure class="allocation-figure">
     <img src="./static/images/allocation_main.png" alt="Four panels: per-group best-of-K raw scores, single-session self-Elo with the 38M inflection point, joint-Elo of six allocations versus total budget, and the 100M cross-section.">
     <figcaption><b>Allocating a fixed budget on FrontierCS Polyomino Packing with Kimi K2.7.</b> Top left: best-of-K raw score at 100M tokens in each of five nested session groups. Top right: single-session self-Elo against the sampling reference; the inflection point at 38M tokens predicts K = 3. Bottom left: joint-Elo of six allocations as the total budget grows, with the predicted three-session curve in red. Bottom right: the 100M-token cross-section. Ratings average over 20,000 random session-to-group assignments.</figcaption>
