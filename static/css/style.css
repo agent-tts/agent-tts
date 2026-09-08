@@ -10,11 +10,15 @@ a:hover{text-decoration:underline}
 .nav a:hover{color:var(--ink);text-decoration:none}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
 .hero{text-align:center;padding:56px 0 24px}
-.hero h1{font-size:2.35rem;line-height:1.2;margin:0 0 18px;font-weight:700;letter-spacing:-.01em}
+.hero h1{font-size:2.35rem;line-height:1.2;margin:0 0 18px;font-weight:700;letter-spacing:0}
 .hero .subtitle{font-size:1.05rem;color:var(--muted);margin:0 0 22px}
 .authors{font-size:1.05rem;line-height:1.9;margin:0 auto 6px;max-width:860px}
-.authors sup{font-size:.68em;color:var(--muted)}
-.affils{color:var(--muted);font-size:.95rem;margin:0 0 6px}
+.authors sup{font-size:.68em;color:var(--ink);white-space:nowrap}
+.suit{display:inline-block;font-family:Georgia,"Times New Roman",serif;font-weight:700;margin-left:.08em}
+.suit-black{color:#111}
+.suit-red{color:#c62828}
+.affils{color:var(--muted);font-size:.95rem;margin:0 auto 6px;display:flex;flex-wrap:wrap;justify-content:center;gap:2px 18px}
+.affils .suit{font-size:1.05em}
 .note{color:var(--muted);font-size:.9rem;margin:0 0 20px}
 .venue{font-weight:600;margin:0 0 22px}
 .btn-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0 0 10px}
@@ -22,20 +26,36 @@ a:hover{text-decoration:underline}
 .btn:hover{background:#000;text-decoration:none}
 .btn.soon{background:#9a9a9a;cursor:default}
 .btn svg{width:17px;height:17px;fill:currentColor}
-.section{padding:34px 0 8px;border-top:1px solid var(--line)}
-.section h2{font-size:1.65rem;margin:0 0 14px;letter-spacing:-.01em}
+.section{padding:34px 0 8px;border-top:1px solid var(--line);scroll-margin-top:84px}
+.section h2{font-size:1.65rem;margin:0 0 14px;letter-spacing:0}
 .section h3{font-size:1.2rem;margin:26px 0 8px}
 .section p{margin:0 0 14px}
 figure{margin:18px 0 26px}
 figure img{width:100%;height:auto;display:block;border-radius:6px}
 figcaption{font-size:.92rem;color:var(--muted);margin-top:10px;line-height:1.5}
+.teaser-figure img{background:#fff}
+.strategy-carousel{margin:18px 0 24px;outline:none}
+.carousel-stage{display:grid}
+.carousel-slide{grid-area:1/1;margin:0;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease}
+.carousel-slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
+.carousel-media{width:100%;aspect-ratio:2007/837;display:grid;place-items:center;background:#fff;overflow:hidden}
+.carousel-media img{width:100%;height:100%;object-fit:contain}
+.carousel-slide figcaption{min-height:4.5em}
+.carousel-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:10px}
+.carousel-arrow{width:36px;height:36px;border:1px solid #d5d8dc;border-radius:50%;background:#fff;color:var(--ink);font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.carousel-arrow:hover,.carousel-arrow:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+.carousel-dots{display:flex;align-items:center;gap:9px}
+.carousel-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#c2c5ca;cursor:pointer}
+.carousel-dot.is-active{background:var(--accent);transform:scale(1.25)}
+.carousel-dot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .takeaway{background:var(--accent-soft);border-left:4px solid var(--accent);padding:12px 16px;border-radius:6px;margin:14px 0 22px;font-size:.98rem}
 .takeaway b{color:var(--accent)}
 .tldr{background:var(--card);border-radius:10px;padding:18px 22px 6px;margin:18px 0 8px}
 .tldr ul{margin:0;padding-left:20px}
 .tldr li{margin:0 0 12px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
-@media (max-width:760px){.grid2{grid-template-columns:1fr}.hero h1{font-size:1.75rem}}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}.hero h1{font-size:1.75rem}.carousel-slide figcaption{min-height:7.5em}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.carousel-slide{transition:none}}
 .eq{font-family:"Latin Modern Math","STIX Two Math","Cambria Math",serif;font-size:1.05em}
 .bibtex{background:#f4f4f6;border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:.86rem;line-height:1.5}
 .bibtex pre{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}

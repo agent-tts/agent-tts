@@ -25,11 +25,23 @@
 <header class="hero wrap">
   <h1>When Agents Slow Down: Understanding LLM Agents' Test-Time Strategies via Elo-per-token Analysis</h1>
   <p class="authors">
-    Kaiyuan Liu<sup>*1,2</sup>, Qiuyang Mang<sup>*1,&sect;</sup>, Bo Peng<sup>3</sup>, Wenhao Chai<sup>3</sup>, Hanchen Li<sup>1</sup>,
-    Shreyas Pimpalgaonkar<sup>4</sup>, Luke Zettlemoyer<sup>2</sup>, Alex Dimakis<sup>1,4</sup>, Alvin Cheung<sup>1</sup>
+    Kaiyuan Liu<sup>*<span class="suit suit-black">&spades;</span><span class="suit suit-red">&hearts;</span></sup>,
+    Qiuyang Mang<sup>*&sect;<span class="suit suit-black">&spades;</span></sup>,
+    Bo Peng<sup><span class="suit suit-red">&diams;</span></sup>,
+    Wenhao Chai<sup><span class="suit suit-red">&diams;</span></sup>,
+    Hanchen Li<sup><span class="suit suit-black">&spades;</span></sup>,
+    Shreyas Pimpalgaonkar<sup><span class="suit suit-black">&clubs;</span></sup>,
+    Luke Zettlemoyer<sup><span class="suit suit-red">&hearts;</span></sup>,
+    Alex Dimakis<sup><span class="suit suit-black">&spades;</span><span class="suit suit-black">&clubs;</span></sup>,
+    Alvin Cheung<sup><span class="suit suit-black">&spades;</span></sup>
   </p>
-  <p class="affils"><sup>1</sup>UC Berkeley &nbsp;&middot;&nbsp; <sup>2</sup>University of Washington &nbsp;&middot;&nbsp; <sup>3</sup>Princeton University &nbsp;&middot;&nbsp; <sup>4</sup>Bespoke Labs</p>
-  <p class="note"><sup>*</sup>Equal contribution (alphabetical order) &nbsp;&middot;&nbsp; <sup>&sect;</sup>Project leader &nbsp;&middot;&nbsp; Correspondence: <a href="mailto:qmang@berkeley.edu">qmang@berkeley.edu</a></p>
+  <p class="affils">
+    <span><span class="suit suit-black">&spades;</span> UC Berkeley</span>
+    <span><span class="suit suit-red">&hearts;</span> University of Washington</span>
+    <span><span class="suit suit-red">&diams;</span> Princeton University</span>
+    <span><span class="suit suit-black">&clubs;</span> Bespoke Labs</span>
+  </p>
+  <p class="note"><sup>*</sup>Equal Contributions &nbsp;&middot;&nbsp; <sup>&sect;</sup>Project Leader &nbsp;&middot;&nbsp; Correspondence: <a href="mailto:qmang@berkeley.edu">qmang@berkeley.edu</a></p>
   <p class="venue">Preprint, 2026</p>
   <div class="btn-row">
     <!-- TODO(arXiv): replace href with the arXiv abs URL and drop the "soon" class -->
@@ -44,8 +56,8 @@
 
 <main class="wrap">
 
-<figure>
-  <img src="./static/images/main-figure.png" alt="Left: self-Elo curves of four agent systems against the 400-Elo-per-decade sampling reference. Right: human versus agent joint-Elo on AHC014 over wall-clock time.">
+<figure class="teaser-figure">
+  <img class="animated-teaser" src="./static/images/main-figure.gif" data-static-src="./static/images/main-figure.png" alt="Animated chart. Left: self-Elo curves of four agent systems growing with token budget against the 400-Elo-per-decade sampling reference. Right: human versus agent joint-Elo growing over wall-clock time on AHC014.">
   <figcaption><b>Agent and human scaling against repeated sampling.</b> Left: self-Elo curves for four agent systems, each aggregated across FrontierCS, ALE-Bench, FlashInfer-Bench and MLS-Bench; shading shows 95% confidence intervals and the dashed line is the 400-Elo-per-decade independent-sampling reference. Right: human&ndash;agent joint-Elo on AHC014 over wall-clock time; agents flatten within their 24-hour runs, while the top-10 and top-50 human cohorts overtake them within days and keep improving.</figcaption>
 </figure>
 
@@ -118,19 +130,36 @@
 <section class="section" id="interventions">
   <h2>Can specialised test-time strategies change the shape?</h2>
   <p>General-purpose agents lose their edge over independent sampling as compute grows. We ask whether strategies built for open-ended optimisation do better: outer-loop methods that evolve programs or prompts from evaluator feedback, test-time training that updates model weights during evaluation, and simply larger models.</p>
-  <figure>
-    <img src="./static/images/optmethods_p0_elo_panels.png" alt="Left: self-Elo of AdaEvolve and GEPA versus the Kimi Code reference on uncached tokens. Right: joint-Elo fit.">
-    <figcaption><b>Test-time evolving (AdaEvolve, GEPA) on Polyomino Packing, measured in uncached tokens.</b> Left: self-Elo curves for the two evolutionary methods with Kimi Code as the agent reference; neither sustains superlinear scaling. Right: a joint-Elo fit; the evolving methods gain an early advantage that diminishes with compute.</figcaption>
-  </figure>
-  <div class="grid2">
-    <figure>
-      <img src="./static/images/ttt_p0_selfelo.png" alt="Test-time training self-Elo and local slope on Polyomino Packing in generated tokens.">
-      <figcaption><b>Test-time training</b> shows a brief period of faster-than-sampling scaling followed by diminishing returns; its slope declines back toward the reference.</figcaption>
-    </figure>
-    <figure>
-      <img src="./static/images/qwen_size_scaling.png" alt="Qwen3.5 models of different sizes on Polyomino Packing at 50M tokens: joint-Elo (left) and per-model self-Elo (right).">
-      <figcaption><b>Model size</b> (Qwen3.5 family, terminus-2 harness, 50M tokens, five trials per model). Left: one tournament over all (model, checkpoint) players, so levels are comparable. Right: one fit per model anchored at 1000, so only shapes are comparable.</figcaption>
-    </figure>
+  <div class="strategy-carousel" data-carousel aria-label="Specialised test-time strategy results" aria-roledescription="carousel" tabindex="0">
+    <div class="carousel-stage" aria-live="polite">
+      <figure class="carousel-slide is-active" data-carousel-slide>
+        <div class="carousel-media">
+          <img src="./static/images/optmethods_p0_elo_panels.png" alt="Left: self-Elo of AdaEvolve and GEPA versus the Kimi Code reference on uncached tokens. Right: joint-Elo fit.">
+        </div>
+        <figcaption><b>Test-time evolving (AdaEvolve, GEPA) on Polyomino Packing, measured in uncached tokens.</b> Left: self-Elo curves for the two evolutionary methods with Kimi Code as the agent reference; neither sustains superlinear scaling. Right: a joint-Elo fit; the evolving methods gain an early advantage that diminishes with compute.</figcaption>
+      </figure>
+      <figure class="carousel-slide" data-carousel-slide aria-hidden="true">
+        <div class="carousel-media">
+          <img src="./static/images/ttt_p0_selfelo.png" alt="Test-time training self-Elo and local slope on Polyomino Packing in generated tokens.">
+        </div>
+        <figcaption><b>Test-time training</b> shows a brief period of faster-than-sampling scaling followed by diminishing returns; its slope declines back toward the reference.</figcaption>
+      </figure>
+      <figure class="carousel-slide" data-carousel-slide aria-hidden="true">
+        <div class="carousel-media">
+          <img src="./static/images/qwen_size_scaling.png" alt="Qwen3.5 models of different sizes on Polyomino Packing at 50M tokens: joint-Elo (left) and per-model self-Elo (right).">
+        </div>
+        <figcaption><b>Model size</b> (Qwen3.5 family, terminus-2 harness, 50M tokens, five trials per model). Left: one tournament over all (model, checkpoint) players, so levels are comparable. Right: one fit per model anchored at 1000, so only shapes are comparable.</figcaption>
+      </figure>
+    </div>
+    <div class="carousel-controls">
+      <button class="carousel-arrow" type="button" data-carousel-prev aria-label="Show previous strategy" title="Previous strategy">&#8592;</button>
+      <div class="carousel-dots" role="group" aria-label="Choose a strategy figure">
+        <button class="carousel-dot is-active" type="button" data-carousel-dot="0" aria-label="Show test-time evolving" aria-pressed="true" title="Test-time evolving"></button>
+        <button class="carousel-dot" type="button" data-carousel-dot="1" aria-label="Show test-time training" aria-pressed="false" title="Test-time training"></button>
+        <button class="carousel-dot" type="button" data-carousel-dot="2" aria-label="Show model-size scaling" aria-pressed="false" title="Model-size scaling"></button>
+      </div>
+      <button class="carousel-arrow" type="button" data-carousel-next aria-label="Show next strategy" title="Next strategy">&#8594;</button>
+    </div>
   </div>
   <div class="takeaway"><b>Takeaway.</b> Evolutionary outer loops, online weight updates and bigger models all shift the curves, but none of them escapes the diminishing-return shape: after an early burst, every strategy we tried scales no better than repeated sampling.</div>
 </section>
@@ -157,5 +186,54 @@
   </div>
 </footer>
 
+<script>
+document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+  const slides = [...carousel.querySelectorAll('[data-carousel-slide]')];
+  const dots = [...carousel.querySelectorAll('[data-carousel-dot]')];
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let active = 0;
+  let timer;
+
+  const show = (index) => {
+    active = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const selected = i === active;
+      slide.classList.toggle('is-active', selected);
+      slide.setAttribute('aria-hidden', String(!selected));
+    });
+    dots.forEach((dot, i) => {
+      const selected = i === active;
+      dot.classList.toggle('is-active', selected);
+      dot.setAttribute('aria-pressed', String(selected));
+    });
+  };
+
+  const stop = () => window.clearInterval(timer);
+  const start = () => {
+    stop();
+    if (!reducedMotion.matches) timer = window.setInterval(() => show(active + 1), 4500);
+  };
+
+  carousel.querySelector('[data-carousel-prev]').addEventListener('click', () => { show(active - 1); start(); });
+  carousel.querySelector('[data-carousel-next]').addEventListener('click', () => { show(active + 1); start(); });
+  dots.forEach((dot, i) => dot.addEventListener('click', () => { show(i); start(); }));
+  carousel.addEventListener('mouseenter', stop);
+  carousel.addEventListener('mouseleave', start);
+  carousel.addEventListener('focusin', stop);
+  carousel.addEventListener('focusout', start);
+  carousel.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') show(active - 1);
+    if (event.key === 'ArrowRight') show(active + 1);
+  });
+  reducedMotion.addEventListener('change', start);
+  start();
+});
+
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.animated-teaser').forEach((image) => {
+    image.src = image.dataset.staticSrc;
+  });
+}
+</script>
 </body>
 </html>
