@@ -26,7 +26,6 @@ python3 scripts/make_human_joint_gif.py
 Search `index.html` for `TODO(`:
 - `TODO(arXiv)`: arXiv abs URL on the Paper button (remove the `soon` class).
 - `TODO(code)`: GitHub repository URL on the Code button.
-- `TODO(data)`: raw-data release URL on the Data button.
 - BibTeX block: arXiv identifier once assigned.
 
 ## Deploy on GitHub Pages
