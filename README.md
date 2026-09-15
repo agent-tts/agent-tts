@@ -24,8 +24,7 @@ python3 scripts/make_human_joint_gif.py
 
 ## Placeholders to fill before launch
 
-Search `index.html` for `TODO(`:
-- BibTeX block: arXiv identifier once assigned.
+None left: the Paper button and the BibTeX block point to arXiv:2609.15309.
 
 ## Deploy on GitHub Pages
 
