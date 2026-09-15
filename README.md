@@ -5,7 +5,7 @@ hero with authors/affiliations/buttons, teaser figure, concept sections with fig
 takeaway boxes, results, BibTeX, footer.
 
 - `index.html` — the page (loads `static/css/style.css` and `static/images/*`).
-- `static/paper.pdf` — local paper PDF used while the arXiv page is unavailable.
+- `static/paper.pdf` — local fallback snapshot of the paper.
 - `static/images/` — figures rendered from the paper PDFs (`fig/*.pdf` in the Overleaf repo)
   at 220–320 dpi, plus the institution logo strip.
 - `scripts/make_teaser_gif.py` — regenerates the animated teaser from the two CSV files
